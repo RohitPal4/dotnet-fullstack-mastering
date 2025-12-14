@@ -1,7 +1,0 @@
-C:\Users\rohit\source\repos\dotnet-fullstack-mastering\dotnet-fullstack-mastering\bin\Debug\dotnet-fullstack-mastering.exe.config
-C:\Users\rohit\source\repos\dotnet-fullstack-mastering\dotnet-fullstack-mastering\bin\Debug\dotnet-fullstack-mastering.exe
-C:\Users\rohit\source\repos\dotnet-fullstack-mastering\dotnet-fullstack-mastering\bin\Debug\dotnet-fullstack-mastering.pdb
-C:\Users\rohit\source\repos\dotnet-fullstack-mastering\dotnet-fullstack-mastering\obj\Debug\dotnet-fullstack-mastering.csproj.AssemblyReference.cache
-C:\Users\rohit\source\repos\dotnet-fullstack-mastering\dotnet-fullstack-mastering\obj\Debug\dotnet-fullstack-mastering.csproj.CoreCompileInputs.cache
-C:\Users\rohit\source\repos\dotnet-fullstack-mastering\dotnet-fullstack-mastering\obj\Debug\dotnet-fullstack-mastering.exe
-C:\Users\rohit\source\repos\dotnet-fullstack-mastering\dotnet-fullstack-mastering\obj\Debug\dotnet-fullstack-mastering.pdb
