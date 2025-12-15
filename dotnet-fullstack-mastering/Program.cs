@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -11,6 +12,8 @@ namespace dotnet_fullstack_mastering
     {
         static void Main(string[] args)
         {
+            // 👇 ADD THIS LINE TO FIX THE '?' SYMBOL  its for currency symbols like ₹ $ €
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             /*
             int x, y, z;
@@ -45,12 +48,12 @@ namespace dotnet_fullstack_mastering
             */
 
             // strings and characters
-/*
-            string firstName = "John";
-            char lastName = 'd';
-            string name = "";
-            char letter = '\0';
-*/
+            /*
+                        string firstName = "John";
+                        char lastName = 'd';
+                        string name = "";
+                        char letter = '\0';
+            */
 
             //Console.Write(firstName);
             //Console.WriteLine();
@@ -177,10 +180,51 @@ namespace dotnet_fullstack_mastering
              Console.WriteLine(y.Length); not use dynamic unless its nessasry
             */
 
-           /* string? name = null;
-            int?age = null;
-            Console.WriteLine($"my age is : {(age??21)+1} and my name is {(name??"Rohit")}");
-           */
+            /* string? name = null;
+             int?age = null;
+             Console.WriteLine($"my age is : {(age??21)+1} and my name is {(name??"Rohit")}");
+            */
+            // class and object
+
+            /*Person person = new Person("Rohit", 21);
+            person.Introduce();
+
+            */
+            // encapsulation
+            /*
+            BankAccount account = new BankAccount(1000m);
+            account.Deposit(500m);
+            Console.WriteLine(account.Balance);
+            account.Withdraw(200m);
+            Console.WriteLine(account.Balance);
+
+            Console.WriteLine($"Current Balance: {account.Balance:C}");
+            Console.WriteLine("\n--- TRANSACTION HISTORY ---");
+
+            foreach(var transaction in account.TransactionHistory)
+            {
+                Console.WriteLine($"{transaction.Date.ToShortDateString()} - {transaction.Note}: {transaction.Amount:C}");
+            }
+            */
+
+            // inheritance
+            // 6. polymorphism
+            // we can treat different objects as the same 'Base' type.
+            List<Payment> pendingPayments = new List<Payment>
+            {
+                new CreditCardPayment("1234567890123456"),
+                new PayPalPayment("rohit@example.com"),
+                new CreditCardPayment("9876543210987654")
+            };
+
+            Console.WriteLine("--- BATCH PROCESSING START ---\n");
+            foreach(var payment in pendingPayments)
+            {
+                payment.Process(100.00m);
+                payment.PrintReceipt();
+                Console.WriteLine();
+            }
+
 
             Console.ReadLine();
 
