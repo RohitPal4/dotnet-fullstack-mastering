@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dotnet_fullstack_mastering
 {
-    // inheritance and polymorphism can be added later as needed
+    /*// inheritance and polymorphism can be added later as needed
 
 
     // 1. Inheritance  ABSTRACT BASE CLASS
@@ -88,4 +88,5 @@ namespace dotnet_fullstack_mastering
             Console.WriteLine($"[PayPal Receipt] Sent to {Email} | ID: {TransactionId}");
         }
     }
+    */
 }

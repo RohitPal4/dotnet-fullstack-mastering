@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dotnet_fullstack_mastering
+namespace DotNetFullstackMastering.Basic
 {
     // class and object
     internal class Person
@@ -216,6 +216,149 @@ public decimal Balance
 
 }
 
+// INTERFACES
 
+namespace DotNetFullstackMastering.Advanced
+{
+    // 1. DATA CONTRACT WHAT COMES BACK
+    // in real app, we never return 'void' we return a status
+    public class PaymentResults
+    {
+        public bool IsSuccess { get; set; }
+        public string TransactionId
+        {
+            get; set;
+        }
+        public string Message { get; set; }
 
+    }
+    // 2. INTERFACE 
+    public interface IPaymentMethods
+    {
+        bool ValidateDetails();
+        PaymentResults ProcessPayment(decimal amount);
+    }
 
+    // 3 CONCRETE IMPLEMENTATION; UPI
+    public class UpiPayment: IPaymentMethods
+    {
+        public string UpiId { get; }
+        public UpiPayment(string upiId)
+        {
+            UpiId = upiId;
+        }
+        public bool ValidateDetails()
+        {
+            // Real logic: Check regex for UPI ID (e.g., must contain '@')
+            return !string.IsNullOrEmpty(UpiId) && UpiId.Contains("@");
+        }
+        public PaymentResults ProcessPayment(decimal amount)
+        {
+            if (!ValidateDetails())
+                return new PaymentResults
+                {
+                    IsSuccess = false,
+                    TransactionId = null,
+                    Message = "Invalid UPI ID"
+                };
+            Console.WriteLine($"Connecting to UPI Server... Charging {amount:C}");
+            return new PaymentResults
+            {
+                IsSuccess = true,
+                TransactionId = "UPI-" + Guid.NewGuid().ToString().Substring(0, 8),
+                Message = "Payment Successful via UPI"
+            };
+        }
+    }
+
+    // 4. CONCRETE IMPLEMENTATION: Credit Card
+    public class CreditCardPaymentv2 : IPaymentMethods
+    {
+        public string CardNumber { get; }
+        public CreditCardPaymentv2(string cardNumber)
+        {
+            CardNumber = cardNumber;
+        }
+
+        public bool ValidateDetails()
+        {
+            return CardNumber.Length == 16; // Simplistic check
+        }
+
+        public PaymentResults ProcessPayment(decimal amount)
+        {
+            if (!ValidateDetails())
+                return new PaymentResults
+                {
+                    IsSuccess = false,
+                    TransactionId = null,
+                    Message = "Invalid Card Number"
+                };
+            Console.WriteLine($"Connecting to Visa Gateway... Charging {amount:C}");
+            return new PaymentResults
+            {
+                IsSuccess = true,
+                TransactionId = "CC-" + Guid.NewGuid().ToString().Substring(0, 8),
+                Message = "Credit Card Charged"
+            };
+        }
+    }
+
+    // 5 THE ADVANCED PART: DEPENDENCY INJECTION
+    // This class ("The Store") Does NOT KNOW whether you are using UPI or Card.
+    // It blindly trusts on the interface
+
+    public class EcommerceStore
+    {
+        private readonly IPaymentMethods _paymentMethods;
+        public EcommerceStore(IPaymentMethods paymentMethods)
+        {
+            _paymentMethods = paymentMethods;
+        }
+
+        public void Checkout(decimal amount)
+        {
+            Console.WriteLine("--- Starting Cehckout ---");
+            if (!_paymentMethods.ValidateDetails())
+            {
+                Console.WriteLine("Payment details are invalid. Aborting checkout.");
+                return;
+            }
+
+            var result = _paymentMethods.ProcessPayment(amount);
+            if (result.IsSuccess)
+            {
+                Console.WriteLine($"Payment Successful! Transaction ID: {result.TransactionId}");
+            }
+            else
+            {
+                Console.WriteLine($"Payment Failed: {result.Message}");
+            }
+        }
+    }
+    // GENERICS CLASS
+    public class Storage<T> where T : class
+    {
+        private List<T> _items = new List<T>();
+
+        public void Add(T item)
+        {
+            _items.Add(item);
+            // typeof(T).Name prints "Person" or "Transaction" automatically
+            Console.WriteLine($"[Storage] Item added to {typeof(T).Name} list.");
+        }
+
+        public T GetAtIndex(int index)
+        {
+            if (index >= 0 && index < _items.Count)
+                return _items[index];
+            return null;
+        }
+
+        public void PrintCount()
+        {
+            Console.WriteLine($"Total {_items.Count} items in storage.");
+        }
+    }
+
+}

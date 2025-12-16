@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DotNetFullstackMastering.Basic;
+using DotNetFullstackMastering.Advanced;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -210,7 +213,7 @@ namespace dotnet_fullstack_mastering
             // inheritance
             // 6. polymorphism
             // we can treat different objects as the same 'Base' type.
-            List<Payment> pendingPayments = new List<Payment>
+            /*List<Payment> pendingPayments = new List<Payment>
             {
                 new CreditCardPayment("1234567890123456"),
                 new PayPalPayment("rohit@example.com"),
@@ -224,7 +227,51 @@ namespace dotnet_fullstack_mastering
                 payment.PrintReceipt();
                 Console.WriteLine();
             }
+            */
+            
+            // INTERFACE
+            
+            // Scenario 1: Customer wants to pay via UPI
+            // We create the specific payment object...
+            IPaymentMethods myUpi = new UpiPayment("rohit@upi");
+            // ... and inject into the store
+            EcommerceStore amazon = new EcommerceStore(myUpi);
+            amazon.Checkout(500.00m);
 
+            Console.WriteLine("\n-------------------\n");
+
+            // Scenario 2: Customer changes mind, uses Card
+            // notice we create a NEW store instance with DIFFERENT behavior
+            IPaymentMethods myCard = new CreditCardPaymentv2("1234123412341234");
+
+            EcommerceStore flipKart = new EcommerceStore(myCard);
+
+            flipKart.Checkout(1200.00m);
+
+
+
+            // ==========================================
+            // 👇 7. GENERICS (ADD THIS NEW CODE BELOW) 👇
+            // ==========================================
+            Console.WriteLine("\n--- 7. GENERICS (Storage<T>) ---");
+
+            // 1. Create storage for Persons
+            // We tell the Storage class: "T is now a Person"
+            Storage<Person> personStorage = new Storage<Person>();
+
+            // .Add() now expects a Person object
+            personStorage.Add(new Person("Rohit", 23));
+            personStorage.Add(new Person("Admin", 30));
+            personStorage.PrintCount();
+
+            // 2. Create storage for Transactions (USING THE SAME CLASS!)
+            // We tell the Storage class: "T is now a Transaction"
+            Storage<Transaction> transactionStorage = new Storage<Transaction>();
+
+            // .Add() now expects a Transaction object
+            transactionStorage.Add(new Transaction(500, "Demo 1", DateTime.Now));
+            transactionStorage.Add(new Transaction(100, "Demo 2", DateTime.Now));
+            transactionStorage.PrintCount();
 
             Console.ReadLine();
 
